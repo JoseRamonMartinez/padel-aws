@@ -1,0 +1,30 @@
+import json
+import boto3
+import os
+from datetime import datetime, timedelta
+from boto3.dynamodb.conditions import Key
+from tools.http_error import HTTPError
+
+aws_region = os.environ.get('AWS_REGION')
+players_table = os.environ['PLAYERS_TABLE']
+
+dynamodb = boto3.resource('dynamodb', region_name=aws_region)
+
+dybamodb_players_table = dynamodb.Table(players_table)
+
+def post_player(data):
+    try:
+        player = {
+            "email": data["email"],
+            "date": int(time.time()),
+            "ttl": int(time.time()) + (86400/2),
+            "data":data["data"]
+        }
+        # write the user to the database
+        dybamodb_dailys_table.put_item(Item=player)
+
+        response = {"Create": True}
+        return response
+
+    except Exception as e:
+        raise HTTPError(500, "Internal Error: %s" % e)

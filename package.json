@@ -1,0 +1,14 @@
+{
+  "name": "padel",
+  "description": "Services for padel",
+  "version": "1.0.0",
+  "scripts": {
+    "deploy": "serverless deploy"
+  },
+  "author": "Jose Ramon Martinez Riveiro",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless": "^1.67.2",
+    "serverless-python-requirements": "^5.1.1"
+  }
+}
