@@ -49,12 +49,12 @@ def scraping_ranking(data):
             ranking_list.append(player_route)
 
         #FAN-OUT
-        #for player_url in ranking_list:
-        #    sns_client.publish(
-        #        TargetArn=sns_arn,
-        #        Message=json.dumps({'default': json.dumps(player_url)}),
-        #        MessageStructure='json'
-        #    )
+        for player_url in ranking_list:
+            sns_client.publish(
+                TargetArn=sns_arn,
+                Message=json.dumps({'default': json.dumps(player_url)}),
+                MessageStructure='json'
+            )
 
         response = {"Ranking_Scrapped": True, "Ranking":json.dumps(ranking_list)}
         return response

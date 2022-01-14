@@ -23,9 +23,13 @@ def h_post_player(event, context):
 
         data = event["body"] if "body" in event else None
         data = event["body"] if "body" in event else None
+
+        for sqs_record in event["Records"]:
+            data = json.loads(sqs_record["body"])
+        
         data = json.loads(data) if data else None
 
-        result = psot_player(data)
+        result = post_player(data)
 
         response.update({"body": json.dumps(result)})
 

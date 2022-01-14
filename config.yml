@@ -12,3 +12,6 @@ apiUrls:
   players: players
   scraping: scraping
 
+#----------AccountId----------
+accountIdNumber: 533796783460
+

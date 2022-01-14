@@ -15,13 +15,13 @@ dybamodb_players_table = dynamodb.Table(players_table)
 def post_player(data):
     try:
         player = {
-            "email": data["email"],
+            "name": data["name"],
             "date": int(time.time()),
             "ttl": int(time.time()) + (86400/2),
             "data":data["data"]
         }
         # write the user to the database
-        dybamodb_dailys_table.put_item(Item=player)
+        dybamodb_players_table.put_item(Item=player)
 
         response = {"Create": True}
         return response

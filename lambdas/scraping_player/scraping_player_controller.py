@@ -11,13 +11,13 @@ from boto3.dynamodb.conditions import Key
 from tools.http_error import HTTPError
 
 aws_region = os.environ.get('AWS_REGION')
+sqs_queue_url = os.environ.get('SQS_POST_PLAYER_URL')
 
-sns_client = boto3.resource('sns', region_name=aws_region)
-
-
+sqs_queue = boto3.resource('sqs', region_name=aws_region).Queue(sqs_queue_url)
 
 def scraping_player(data):
     try:
+        print(sqs_queue_url)
         agent = {"User-Agent":'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'}
         result = requests.get(data["url"], headers=agent)
         src = result.content
@@ -33,27 +33,27 @@ def scraping_player(data):
 
         response = {
                 'name': player_data_list[0],
-                'positon':player_data_list[1],
-                'score':player_data_list[2],
-                'played_matches':player_data_list[3],
-                'won_matches':player_data_list[4],
-                'lost_matches':player_data_list[5],
-                'effectiveness':player_data_list[6],
-                'winning_streak':player_data_list[7],
-                'partner':player_data_list[7],
-                'side':player_data_list[9],
-                'born_place':player_data_list[10],
-                'born_date':player_data_list[11],
-                'height':player_data_list[12],
-                'home_place':player_data_list[13]        
+                'data':{
+                    'positon':player_data_list[1],
+                    'score':player_data_list[2],
+                    'played_matches':player_data_list[3],
+                    'won_matches':player_data_list[4],
+                    'lost_matches':player_data_list[5],
+                    'effectiveness':player_data_list[6],
+                    'winning_streak':player_data_list[7],
+                    'partner':player_data_list[7],
+                    'side':player_data_list[9],
+                    'born_place':player_data_list[10],
+                    'born_date':player_data_list[11],
+                    'height':player_data_list[12],
+                    'home_place':player_data_list[13]  
+                }
         }
 
-        #FAN-IN
-        sns_client.publish(
-            TargetArn=sns_arn,
-            Message=json.dumps({'default': json.dumps(response)}),
-            MessageStructure='json'
-            )
+        #FAN-IN pattern
+        #sqs_queue.send_message(
+        #    MessageBody=json.dumps(response)
+        #)
 
         return json.dumps(response)
 

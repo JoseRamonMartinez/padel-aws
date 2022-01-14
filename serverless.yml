@@ -18,8 +18,8 @@ provider:
   environment:
     PLAYERS_TABLE: ${self:custom.playersTable}
     RANKING_BUCKET: ${self:custom.rankingBucket}
-    SNS_SCRAPING_ARN: arn:aws:sns:${self:custom.region}:${AWS::AccountId}:${self:custom.scrapingTopic}
-    SQS_POST_PLAYER_ARN: arn:aws:sqs:${self:custom.region}:${AWS::AccountId}:${self:custom.postPlayerQueue}
+    SNS_SCRAPING_ARN: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.scrapingTopic}
+    SQS_POST_PLAYER_URL: https://sqs.${self:custom.region}.amazonaws.com/${self:custom.accountId}/${self:custom.postPlayerQueue}
 
 
 
@@ -73,17 +73,19 @@ provider:
       Action:
         - sns:Publish
       Resource:
-        - arn:aws:sns:${self:custom.region}:${AWS::AccountId}:${self:custom.scrapingTopic}
+        - arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.scrapingTopic}
     - Effect: Allow
       Action:
         - sqs:SendMessage
+        - sqs:GetQueueUrl
       Resource:
-        - arn:aws:sns:${self:custom.region}:${AWS::AccountId}:${self:custom.postPlayerQueue}
+        - arn:aws:sqs:${self:custom.region}:${self:custom.accountId}:${self:custom.postPlayerQueue}
 
 custom:
   region: eu-west-1
   stage: prod
   prefix: padel
+  accountId: 533796783460
   playersTable: ${self:service}-${self:custom.config.playersTableName}.${self:custom.region}.com
   rankingBucket: ${self:service}-${self:custom.config.rankingBucket}.${self:custom.region}.com
   scrapingTopic: ${self:service}-${self:custom.config.scrapingTopicName}
@@ -128,7 +130,7 @@ functions:
     timeout: 10
     events:
       - sns:
-          arn: arn:aws:sns:${self:custom.region}:${AWS::AccountId}:${self:custom.scrapingTopic}
+          arn: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.scrapingTopic}
           topicName: ${self:custom.scrapingTopic}
 
 
@@ -146,11 +148,21 @@ functions:
     handler: lambdas/post_player/handler_post_player.h_post_player
     events:
       - sqs:
-          arn: arn:aws:sqs:${self:custom.region}:${AWS::AccountId}:${self:custom.postPlayerQueue}
+          arn: arn:aws:sqs:${self:custom.region}:${self:custom.accountId}:${self:custom.postPlayerQueue}
 
 #-------------RESOURCES--------------------
 resources:
   Resources:
+    #-------------SNS---------------------
+    scrapingTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${self:custom.scrapingTopic}
+    #-------------SQS---------------------
+    postPlayerQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:custom.postPlayerQueue}
     #-------------S3---------------------
     rankingBucket:
       Type: AWS::S3::Bucket
