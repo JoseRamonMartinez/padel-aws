@@ -11,13 +11,12 @@ from boto3.dynamodb.conditions import Key
 from tools.http_error import HTTPError
 
 aws_region = os.environ.get('AWS_REGION')
-sqs_queue_url = os.environ.get('SQS_POST_PLAYER_URL')
+sns_arn = os.environ.get('SNS_POST_PLAYER_ARN')
 
-sqs_queue = boto3.resource('sqs', region_name=aws_region).Queue(sqs_queue_url)
+sns_client = boto3.client('sns', region_name=aws_region)
 
 def scraping_player(data):
     try:
-        print(sqs_queue_url)
         agent = {"User-Agent":'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'}
         result = requests.get(data["url"], headers=agent)
         src = result.content
@@ -50,9 +49,11 @@ def scraping_player(data):
                 }
         }
 
-        #FAN-IN pattern
-        sqs_queue.send_message(
-            MessageBody=json.dumps(response)
+        #Post player on DDBB
+        sns_client.publish(
+            TargetArn=sns_arn,
+            Message=json.dumps({'default': json.dumps(response)}),
+            MessageStructure='json'
         )
 
         return json.dumps(response)

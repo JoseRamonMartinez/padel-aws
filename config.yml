@@ -6,7 +6,7 @@ rankingBucket: rankingbucket
 
 #-------------SNS------------------------------------
 scrapingTopicName: scrapingTopic
-postPlayerQueueName: postPlayerQueue
+postPlayerTopicName: postPlayerTopic
 #-------------API GATEWAY---------------------------
 apiUrls:
   players: players

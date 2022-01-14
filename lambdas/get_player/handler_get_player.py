@@ -6,10 +6,10 @@ import uuid
 import boto3
 
 from lambdas.get_player.get_player_controller import (
-    get_player,
+    get_player_by_name,get_player_by_position
 )
 
-def h_get_player(event, context):
+def h_get_player_by_name(event, context):
 
     response = {
         "headers": {"Access-Control-Allow-Origin": "*"},
@@ -20,11 +20,30 @@ def h_get_player(event, context):
     try:
         headers = event["headers"] if "headers" in event else None
 
-        #data = event["body"] if "body" in event else None
-        #data = event["body"] if "body" in event else None
-        #data = json.loads(data) if data else None
         data = event["pathParameters"] if "pathParameters" in event else None
 
+        result = get_player(data)
+
+        response.update({"body": json.dumps(result)})
+
+    except Exception as e:
+        print("> Error: %s" % e)
+        response.update({"statusCode": 500, "body": "Internal Error: %s" % e})
+
+    return response
+
+def h_get_player_by_position(event, context):
+
+    response = {
+        "headers": {"Access-Control-Allow-Origin": "*"},
+        "statusCode": 200,
+        "body": None,
+    }
+
+    try:
+        headers = event["headers"] if "headers" in event else None
+
+        data = event["pathParameters"] if "pathParameters" in event else None
 
         result = get_player(data)
 

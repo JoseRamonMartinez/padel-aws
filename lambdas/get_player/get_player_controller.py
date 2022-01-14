@@ -13,10 +13,22 @@ dynamodb = boto3.resource('dynamodb', region_name=aws_region)
 dybamodb_players_table = dynamodb.Table(players_table)
 
 
-def get_player(data):
+def get_player_by_name(data):
     try:
-        response = dybamodb_dailys_table.query(
-                                KeyConditionExpression=Key('name').eq(data["name"])
+        response = dybamodb_players_table.get_item(
+            Key={
+                "name": data["name"]
+            }
+        )
+        return response["Item"]
+    except Exception as e:
+        raise HTTPError(500, 'Internal Error: %s' % e)
+
+def get_player_by_position(data):
+    try:
+        response = dybamodb_players_table.query(
+            IndexName="PositionIndex",
+            KeyConditionExpression=Key('position').eq(data["position"])
         )
         return response["Items"]
     except Exception as e:

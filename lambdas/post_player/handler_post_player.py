@@ -24,9 +24,7 @@ def h_post_player(event, context):
         #data = event["body"] if "body" in event else None
         #data = event["body"] if "body" in event else None
 
-        for sqs_record in event["Records"]:
-            data = sqs_record["body"]
-        
+        data = event["Records"][0]["Sns"]["Message"] if "Records" in event else None        
         data = json.loads(data) if data else None
 
         result = post_player(data)

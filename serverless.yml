@@ -19,36 +19,34 @@ provider:
     PLAYERS_TABLE: ${self:custom.playersTable}
     RANKING_BUCKET: ${self:custom.rankingBucket}
     SNS_SCRAPING_ARN: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.scrapingTopic}
-    SQS_POST_PLAYER_URL: https://sqs.${self:custom.region}.amazonaws.com/${self:custom.accountId}/${self:custom.postPlayerQueue}
+    SNS_POST_PLAYER_ARN: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.postPlayerTopic}
 
-
-
-  # apiGateway:
-  #   shouldStartNameWithService: true
-  #   apiKeys:
-  #     - free:
-  #         - myFreeKey2022
-  #         - ${self:custom.stage}-myFreeKey22
-  #     - paid:
-  #         - myPaidKey22
-  #         - ${self:custom.stage}-myPaidKey22
-  #   usagePlan:
-  #     - free:
-  #         quota:
-  #           limit: 5000
-  #           offset: 2
-  #           period: MONTH
-  #         throttle:
-  #           burstLimit: 200
-  #           rateLimit: 100
-  #     - paid:
-  #         quota:
-  #           limit: 50000
-  #           offset: 1
-  #           period: MONTH
-  #         throttle:
-  #           burstLimit: 2000
-  #           rateLimit: 1000
+  apiGateway:
+   shouldStartNameWithService: true
+   apiKeys:
+     - free:
+         - freePadelApiKey2022
+         - ${self:custom.stage}-FreePadelApiKey2022
+     - paid:
+         - paidPadelApiKey2022
+         - ${self:custom.stage}-paidPadelApiKey2022
+   usagePlan:
+     - free:
+         quota:
+           limit: 5000
+           offset: 2
+           period: MONTH
+         throttle:
+           burstLimit: 200
+           rateLimit: 100
+     - paid:
+         quota:
+           limit: 50000
+           offset: 1
+           period: MONTH
+         throttle:
+           burstLimit: 2000
+           rateLimit: 1000
 
   iamRoleStatements:
     - Effect: Allow
@@ -74,12 +72,7 @@ provider:
         - sns:Publish
       Resource:
         - arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.scrapingTopic}
-    - Effect: Allow
-      Action:
-        - sqs:SendMessage
-        - sqs:GetQueueUrl
-      Resource:
-        - arn:aws:sqs:${self:custom.region}:${self:custom.accountId}:${self:custom.postPlayerQueue}
+        - arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.postPlayerTopic}
 
 custom:
   region: eu-west-1
@@ -89,7 +82,7 @@ custom:
   playersTable: ${self:service}-${self:custom.config.playersTableName}.${self:custom.region}.com
   rankingBucket: ${self:service}-${self:custom.config.rankingBucket}.${self:custom.region}.com
   scrapingTopic: ${self:service}-${self:custom.config.scrapingTopicName}
-  postPlayerQueue: ${self:service}-${self:custom.config.postPlayerQueueName}
+  postPlayerTopic: ${self:service}-${self:custom.config.postPlayerTopicName}
 
 
 
@@ -126,7 +119,7 @@ functions:
       - arn:aws:lambda:eu-west-1:533796783460:layer:bs4:1
     timeout: 10
     events:
-      - schedule: cron(17 00 * * ? *)
+      - schedule: cron(30 23 1 * ? *)
 
   scraping_player:
     handler: lambdas/scraping_player/handler_scraping_player.h_scraping_player
@@ -140,20 +133,30 @@ functions:
 
 
   #-------------PLAYERS-----------------------------------
-  get_player:
-    handler: lambdas/get_player/handler_get_player.h_get_player
-    #events:
-    #  - http:
-    #      path: ${self:custom.config.apiUrls.players}/get/{name}
-    #      method: get
-    #      cors: true
-    #      private: true
+  get_player_by_name:
+    handler: lambdas/get_player/handler_get_player.h_get_player_by_name
+    events:
+      - http:
+          path: ${self:custom.config.apiUrls.players}/name/{name}
+          method: get
+          cors: true
+          private: true
+
+  get_player_by_position:
+    handler: lambdas/get_player/handler_get_player.h_get_player_by_position
+    events:
+      - http:
+          path: ${self:custom.config.apiUrls.players}/ranking/{position}
+          method: get
+          cors: true
+          private: true
 
   post_player:
     handler: lambdas/post_player/handler_post_player.h_post_player
     events:
-      - sqs:
-          arn: arn:aws:sqs:${self:custom.region}:${self:custom.accountId}:${self:custom.postPlayerQueue}
+      - sns:
+          arn: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.postPlayerTopic}
+          topicName: ${self:custom.postPlayerTopic}
 
 #-------------RESOURCES--------------------
 resources:
@@ -163,11 +166,11 @@ resources:
       Type: AWS::SNS::Topic
       Properties:
         TopicName: ${self:custom.scrapingTopic}
-    #-------------SQS---------------------
-    postPlayerQueue:
-      Type: AWS::SQS::Queue
+
+    postPlayerTopic:
+      Type: AWS::SNS::Topic
       Properties:
-        QueueName: ${self:custom.postPlayerQueue}
+        TopicName: ${self:custom.postPlayerTopic}
     #-------------S3---------------------
     rankingBucket:
       Type: AWS::S3::Bucket
@@ -184,15 +187,25 @@ resources:
             AttributeType: S
           - AttributeName: position
             AttributeType: N
+          - AttributeName: data
+            AttributeType: S
+          - AttributeName: ttl
+            AttributeType: N
         KeySchema:
           - AttributeName: name
             KeyType: HASH
-          - AttributeName: position
-            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: PositionIndex
+            KeySchema:
+              - AttributeName: position
+                KeyType: HASH
+              - AttributeName: name
+                KeyType: RANGE
+            Projection:
+              ProjectionType: 'ALL'
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-
 #---------PLUGINS----------
 plugins:
   - serverless-python-requirements

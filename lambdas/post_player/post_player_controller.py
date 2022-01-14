@@ -17,9 +17,8 @@ def post_player(data):
     try:
         player = {
             "name": data["name"],
-            "position": data["position"],
-            "date": int(time.time()),
-            "ttl": int(time.time() + (86400)),
+            "position": int(data["position"]),
+            "ttl": int(time.time() + (86400*31)),
             "data":data["data"]
         }
         # write the user to the database

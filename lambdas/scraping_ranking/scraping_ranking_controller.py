@@ -26,7 +26,7 @@ def scraping_ranking(data):
         options.add_argument('--disable-dev-shm-usage')
         driver = webdriver.Chrome('/opt/chromedriver',chrome_options=options)
         driver.get("https://www.worldpadeltour.com/jugadores/?ranking=masculino")
-        SCROLL_PAUSE_TIME = 0.3
+        SCROLL_PAUSE_TIME = 0.5
         # Get scroll height
         last_height = driver.execute_script("return document.body.scrollHeight")        
         for x in range(5):
@@ -49,10 +49,10 @@ def scraping_ranking(data):
             ranking_list.append(player_route)
 
         #FAN-OUT
-        for player_url in ranking_list:
+        for player_url in ranking_list[0:50]:
             sns_client.publish(
                 TargetArn=sns_arn,
-                Message=json.dumps({'default': json.dumps(player_url)}),
+                Message=json.dumps({'default': json.dumps({'url':player_url})}),
                 MessageStructure='json'
             )
 
