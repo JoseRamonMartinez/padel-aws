@@ -17,7 +17,6 @@ provider:
   region: ${self:custom.region}
   environment:
     PLAYERS_TABLE: ${self:custom.playersTable}
-    RANKING_BUCKET: ${self:custom.rankingBucket}
     SNS_SCRAPING_ARN: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.scrapingTopic}
     SNS_POST_PLAYER_ARN: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.postPlayerTopic}
 
@@ -62,13 +61,6 @@ provider:
         - arn:aws:dynamodb:${self:custom.region}:*:table/${self:custom.playersTable}
     - Effect: Allow
       Action:
-        - s3:PutObject
-        - s3:GetObject
-        - s3:DeleteObject
-      Resource:
-        - arn:aws:s3:::${self:custom.rankingBucket}/*
-    - Effect: Allow
-      Action:
         - sns:Publish
       Resource:
         - arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.scrapingTopic}
@@ -80,7 +72,6 @@ custom:
   prefix: padel
   accountId: 533796783460
   playersTable: ${self:service}-${self:custom.config.playersTableName}.${self:custom.region}.com
-  rankingBucket: ${self:service}-${self:custom.config.rankingBucket}.${self:custom.region}.com
   scrapingTopic: ${self:service}-${self:custom.config.scrapingTopicName}
   postPlayerTopic: ${self:service}-${self:custom.config.postPlayerTopicName}
 
@@ -171,11 +162,6 @@ resources:
       Type: AWS::SNS::Topic
       Properties:
         TopicName: ${self:custom.postPlayerTopic}
-    #-------------S3---------------------
-    rankingBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:custom.rankingBucket}
 
     #-------------DYNAMODB------------------------------------
     playersTable:

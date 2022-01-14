@@ -1,12 +1,10 @@
 --- #-------------DYNAMODB-------------------------------
 playersTableName: Players
 
-#-------------S3------------------------------------
-rankingBucket: rankingbucket
-
 #-------------SNS------------------------------------
 scrapingTopicName: scrapingTopic
 postPlayerTopicName: postPlayerTopic
+
 #-------------API GATEWAY---------------------------
 apiUrls:
   players: players
