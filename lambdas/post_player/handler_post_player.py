@@ -21,11 +21,11 @@ def h_post_player(event, context):
     try:
         headers = event["headers"] if "headers" in event else None
 
-        data = event["body"] if "body" in event else None
-        data = event["body"] if "body" in event else None
+        #data = event["body"] if "body" in event else None
+        #data = event["body"] if "body" in event else None
 
         for sqs_record in event["Records"]:
-            data = json.loads(sqs_record["body"])
+            data = sqs_record["body"]
         
         data = json.loads(data) if data else None
 

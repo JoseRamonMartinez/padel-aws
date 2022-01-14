@@ -1,6 +1,7 @@
 import json
 import boto3
 import os
+import time
 from datetime import datetime, timedelta
 from boto3.dynamodb.conditions import Key
 from tools.http_error import HTTPError
@@ -16,8 +17,9 @@ def post_player(data):
     try:
         player = {
             "name": data["name"],
+            "position": data["position"],
             "date": int(time.time()),
-            "ttl": int(time.time()) + (86400/2),
+            "ttl": int(time.time() + (86400)),
             "data":data["data"]
         }
         # write the user to the database

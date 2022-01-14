@@ -9,6 +9,7 @@
   "license": "ISC",
   "devDependencies": {
     "serverless": "^1.67.2",
+    "serverless-dynamodb-ttl": "^0.1.1",
     "serverless-python-requirements": "^5.1.1"
   }
 }

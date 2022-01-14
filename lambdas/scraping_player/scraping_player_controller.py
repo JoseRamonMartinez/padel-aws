@@ -33,8 +33,8 @@ def scraping_player(data):
 
         response = {
                 'name': player_data_list[0],
+                'position':player_data_list[1],
                 'data':{
-                    'positon':player_data_list[1],
                     'score':player_data_list[2],
                     'played_matches':player_data_list[3],
                     'won_matches':player_data_list[4],
@@ -51,9 +51,9 @@ def scraping_player(data):
         }
 
         #FAN-IN pattern
-        #sqs_queue.send_message(
-        #    MessageBody=json.dumps(response)
-        #)
+        sqs_queue.send_message(
+            MessageBody=json.dumps(response)
+        )
 
         return json.dumps(response)
 

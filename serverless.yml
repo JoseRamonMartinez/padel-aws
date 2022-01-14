@@ -94,6 +94,9 @@ custom:
 
 
   dynamodb:
+    ttl:
+      - table: ${self:custom.playersTable}
+        field: ttl
     # If you only want to use DynamoDB Local in some stages, declare them here
     stages:
       - prod
@@ -122,6 +125,8 @@ functions:
       - arn:aws:lambda:eu-west-1:533796783460:layer:chromedriver:1
       - arn:aws:lambda:eu-west-1:533796783460:layer:bs4:1
     timeout: 10
+    events:
+      - schedule: cron(17 00 * * ? *)
 
   scraping_player:
     handler: lambdas/scraping_player/handler_scraping_player.h_scraping_player
@@ -178,7 +183,7 @@ resources:
           - AttributeName: name
             AttributeType: S
           - AttributeName: position
-            AttributeType: S
+            AttributeType: N
         KeySchema:
           - AttributeName: name
             KeyType: HASH
@@ -191,3 +196,4 @@ resources:
 #---------PLUGINS----------
 plugins:
   - serverless-python-requirements
+  - serverless-dynamodb-ttl
