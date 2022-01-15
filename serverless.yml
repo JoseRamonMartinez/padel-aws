@@ -19,33 +19,28 @@ provider:
     PLAYERS_TABLE: ${self:custom.playersTable}
     SNS_SCRAPING_ARN: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.scrapingTopic}
     SNS_POST_PLAYER_ARN: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.postPlayerTopic}
-
-  apiGateway:
-   shouldStartNameWithService: true
-   apiKeys:
-     - free:
-         - freePadelApiKey2022
-         - ${self:custom.stage}-FreePadelApiKey2022
-     - paid:
-         - paidPadelApiKey2022
-         - ${self:custom.stage}-paidPadelApiKey2022
-   usagePlan:
-     - free:
-         quota:
-           limit: 5000
-           offset: 2
-           period: MONTH
-         throttle:
-           burstLimit: 200
-           rateLimit: 100
-     - paid:
-         quota:
-           limit: 50000
-           offset: 1
-           period: MONTH
-         throttle:
-           burstLimit: 2000
-           rateLimit: 1000
+  apiKeys:
+    - free:
+        - freePadelApiKey2022
+    - paid:
+        - paidPadelApiKey2022
+  usagePlan:
+    - free:
+        quota:
+          limit: 5000
+          offset: 2
+          period: MONTH
+        throttle:
+          burstLimit: 200
+          rateLimit: 100
+    - paid:
+        quota:
+          limit: 50000
+          offset: 1
+          period: MONTH
+        throttle:
+          burstLimit: 2000
+          rateLimit: 1000
 
   iamRoleStatements:
     - Effect: Allow
@@ -70,7 +65,7 @@ custom:
   region: eu-west-1
   stage: prod
   prefix: padel
-  accountId: 533796783460
+  accountId: ${self:custom.config.accountIdNumber}
   playersTable: ${self:service}-${self:custom.config.playersTableName}.${self:custom.region}.com
   scrapingTopic: ${self:service}-${self:custom.config.scrapingTopicName}
   postPlayerTopic: ${self:service}-${self:custom.config.postPlayerTopicName}
@@ -95,6 +90,7 @@ custom:
       domain:
         sources:
           - table: ${self:custom.playersTable}
+            sources: ${self:custom.config.playersSeeder}
 
   #-------------VARIABLES------------------------------------
   config: ${file(./config.yml)}
@@ -173,10 +169,6 @@ resources:
             AttributeType: S
           - AttributeName: position
             AttributeType: N
-          - AttributeName: data
-            AttributeType: S
-          - AttributeName: ttl
-            AttributeType: N
         KeySchema:
           - AttributeName: name
             KeyType: HASH
@@ -189,6 +181,9 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: 'ALL'
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1

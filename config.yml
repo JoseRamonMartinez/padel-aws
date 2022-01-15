@@ -1,5 +1,6 @@
---- #-------------DYNAMODB-------------------------------
+#-------------DYNAMODB-------------------------------
 playersTableName: Players
+playersSeeder: [./seeds/players.json]
 
 #-------------SNS------------------------------------
 scrapingTopicName: scrapingTopic
