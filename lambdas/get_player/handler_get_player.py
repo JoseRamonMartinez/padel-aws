@@ -3,6 +3,7 @@ import logging
 import os
 import time
 import uuid
+from tools.decimalencoder import DecimalEncoder
 import boto3
 
 from lambdas.get_player.get_player_controller import (
@@ -22,9 +23,9 @@ def h_get_player_by_name(event, context):
 
         data = event["pathParameters"] if "pathParameters" in event else None
 
-        result = get_player(data)
+        result = get_player_by_name(data)
 
-        response.update({"body": json.dumps(result)})
+        response.update({"body": json.dumps(result, cls=DecimalEncoder)})
 
     except Exception as e:
         print("> Error: %s" % e)
@@ -45,9 +46,9 @@ def h_get_player_by_position(event, context):
 
         data = event["pathParameters"] if "pathParameters" in event else None
 
-        result = get_player(data)
+        result = get_player_by_position(data)
 
-        response.update({"body": json.dumps(result)})
+        response.update({"body": json.dumps(result, cls=DecimalEncoder)})
 
     except Exception as e:
         print("> Error: %s" % e)

@@ -22,7 +22,7 @@ def scraping_player(data):
         src = result.content
         soup = BeautifulSoup(src, 'html.parser')
         player_data_list = []
-        player_data_list.append(re.sub(r'.*jugadores/(.*)/.*', r'\1', data["url"]).replace("-", " ").title())
+        player_data_list.append(re.sub(r'.*jugadores/(.*)/.*', r'\1', data["url"]))
 
         for player_data in soup.find_all('p', class_="c-ranking-header__data"):
             player_data_list.append( player_data.get_text())

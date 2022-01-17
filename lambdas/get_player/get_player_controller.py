@@ -4,6 +4,7 @@ import os
 from datetime import datetime, timedelta
 from boto3.dynamodb.conditions import Key
 from tools.http_error import HTTPError
+from tools.decimalencoder import DecimalEncoder
 
 aws_region = os.environ.get('AWS_REGION')
 players_table = os.environ['PLAYERS_TABLE']
@@ -15,20 +16,18 @@ dybamodb_players_table = dynamodb.Table(players_table)
 
 def get_player_by_name(data):
     try:
-        response = dybamodb_players_table.get_item(
-            Key={
-                "name": data["name"]
-            }
+        response = dybamodb_players_table.query(
+            KeyConditionExpression=Key('name').eq(data["name"])
         )
-        return response["Item"]
+        return response["Items"]
     except Exception as e:
         raise HTTPError(500, 'Internal Error: %s' % e)
 
 def get_player_by_position(data):
     try:
         response = dybamodb_players_table.query(
-            IndexName="PositionIndex",
-            KeyConditionExpression=Key('position').eq(data["position"])
+            IndexName='PositionIndex',
+            KeyConditionExpression=Key('position').eq(int(data["position"]))
         )
         return response["Items"]
     except Exception as e:
