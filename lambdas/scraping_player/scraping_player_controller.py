@@ -40,7 +40,7 @@ def scraping_player(data):
                     'lost_matches':player_data_list[5],
                     'effectiveness':player_data_list[6],
                     'winning_streak':player_data_list[7],
-                    'partner':player_data_list[7],
+                    'partner':player_data_list[8],
                     'side':player_data_list[9],
                     'born_place':player_data_list[10],
                     'born_date':player_data_list[11],

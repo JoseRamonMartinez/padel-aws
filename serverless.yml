@@ -60,6 +60,13 @@ provider:
       Resource:
         - arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.scrapingTopic}
         - arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.postPlayerTopic}
+    - Effect: Allow
+      Action:
+        - lambda:InvokeFunction
+      Resource:
+        - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:function:${self:custom.prefix}-${self:custom.region}-get_ranking
+        - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:function:${self:custom.prefix}-${self:custom.region}-get_player_by_positon
+        - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:function:${self:custom.prefix}-${self:custom.region}-get_player_by_name
 
 custom:
   region: eu-west-1
@@ -69,6 +76,7 @@ custom:
   playersTable: ${self:service}-${self:custom.config.playersTableName}.${self:custom.region}.com
   scrapingTopic: ${self:service}-${self:custom.config.scrapingTopicName}
   postPlayerTopic: ${self:service}-${self:custom.config.postPlayerTopicName}
+
 
 
 
@@ -118,7 +126,15 @@ functions:
           arn: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.scrapingTopic}
           topicName: ${self:custom.scrapingTopic}
 
-
+  #-------------RANKING-----------------------------------
+  get_ranking:
+    handler: lambdas/get_ranking/handler_get_ranking.h_get_ranking
+    events:
+      - http:
+          path: ${self:custom.config.apiUrls.players}/ranking
+          method: get
+          cors: true
+          private: true
   #-------------PLAYERS-----------------------------------
   get_player_by_name:
     handler: lambdas/get_player/handler_get_player.h_get_player_by_name
