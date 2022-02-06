@@ -155,7 +155,7 @@ José Ramón Martínez Riveiro - [Linkdedin](https://www.linkedin.com/in/joseram
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[deploy-shield]: https://github.com/JoseRamonMartinez/api-padel/actions/workflows/cd-serverless.yml/badge.svg
+[deploy-shield]: https://github.com/JoseRamonMartinez/api-padel/action/workflows/cd-serverless.yml/badge.svg
 [deploy-url]: https://github.com/JoseRamonMartinez/api-padel/actions/workflows/cd-serverless.yml
 [stars-shield]: https://img.shields.io/github/stars/JoseRamonMartinez/api-padel.svg?style=for-the-badge
 [stars-url]: https://github.com/JoseRamonMartinez/api-padel/stargazers
