@@ -2,6 +2,7 @@
 
 <!-- PROJECT SHIELDS -->
 [![CD][deploy-shield]][deploy-url]
+[![License][license-shield]][license-url]
 [![Stargazers][stars-shield]][stars-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
@@ -155,10 +156,15 @@ José Ramón Martínez Riveiro - [Linkdedin](https://www.linkedin.com/in/joseram
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[deploy-shield]: https://github.com/JoseRamonMartinez/api-padel/actions/workflows/cd-serverless.yml/badge.svg
+[deploy-shield]: https://img.shields.io:/github/workflow/status/joseramonmartinez/api-padel/actions/workflows/cd-serverless.yml?style=for-the-badge
 [deploy-url]: https://github.com/JoseRamonMartinez/api-padel/actions/workflows/cd-serverless.yml
 [stars-shield]: https://img.shields.io/github/stars/JoseRamonMartinez/api-padel.svg?style=for-the-badge
 [stars-url]: https://github.com/JoseRamonMartinez/api-padel/stargazers
+[license-shield]: https://img.shields.io/badge/LICENSE-COPYRIGHT-yellow?style=for-the-badge
+[license-url]: https://img.shields.io/badge/LICENSE-COPYRIGHT-yellow?style=for-the-badge
+
+
+
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/joseramonmartinez
 [product-screenshot]: images/screenshot.png
