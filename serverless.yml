@@ -77,9 +77,6 @@ custom:
   scrapingTopic: ${self:service}-${self:custom.config.scrapingTopicName}
   postPlayerTopic: ${self:service}-${self:custom.config.postPlayerTopicName}
 
-
-
-
   dynamodb:
     ttl:
       - table: ${self:custom.playersTable}
@@ -109,9 +106,9 @@ functions:
   scraping_ranking:
     handler: lambdas/scraping_ranking/handler_scraping_ranking.h_scraping_ranking
     layers:
-      - arn:aws:lambda:eu-west-1:533796783460:layer:selenium:1
-      - arn:aws:lambda:eu-west-1:533796783460:layer:chromedriver:1
-      - arn:aws:lambda:eu-west-1:533796783460:layer:bs4:1
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:selenium:1
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:chromedriver:1
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:bs4:1
     timeout: 10
     events:
       - schedule: cron(30 23 1 * ? *)
@@ -119,7 +116,7 @@ functions:
   scraping_player:
     handler: lambdas/scraping_player/handler_scraping_player.h_scraping_player
     layers:
-      - arn:aws:lambda:eu-west-1:533796783460:layer:bs4:1
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:bs4:1
     timeout: 10
     events:
       - sns:

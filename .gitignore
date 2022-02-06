@@ -3,4 +3,4 @@ node_modules
 *__pycache__*
 .serverless
 .DS_Store
-secrets.yml
+config.yml
