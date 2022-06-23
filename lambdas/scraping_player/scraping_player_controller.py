@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from boto3.dynamodb.conditions import Key
 from tools.http_error import HTTPError
 from aws_xray_sdk.core import xray_recorder
-from aws_xray_sdk.core import patch_all
+from aws_xray_sdk.core import patch_all, patch
 
 patch_all()
 patch(['boto3'])
