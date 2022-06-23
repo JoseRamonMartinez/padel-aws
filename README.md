@@ -1,11 +1,11 @@
 <div id="top"></div>
 
 <!-- PROJECT SHIELDS -->
+
 [![AWS][aws-shield]][aws-url]
-[![CD][deploy-shield]][deploy-url]
 [![License][license-shield]][license-url]
 [![Stargazers][stars-shield]][stars-url]
-
+[![CD][deploy-shield]][deploy-url]
 
 <!-- PROJECT LOGO -->
 <br />
