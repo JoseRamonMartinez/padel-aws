@@ -10,6 +10,7 @@
   "devDependencies": {
     "serverless": "^1.67.2",
     "serverless-dynamodb-ttl": "^0.1.1",
+    "serverless-plugin-tracing": "^2.0.0",
     "serverless-python-requirements": "^5.1.1"
   }
 }

@@ -8,6 +8,12 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from boto3.dynamodb.conditions import Key
 from tools.http_error import HTTPError
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.core import patch_all
+
+patch_all()
+patch(['boto3'])
+
 
 aws_region = os.environ.get('AWS_REGION')
 

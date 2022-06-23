@@ -19,6 +19,11 @@ provider:
     PLAYERS_TABLE: ${self:custom.playersTable}
     SNS_SCRAPING_ARN: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.scrapingTopic}
     SNS_POST_PLAYER_ARN: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.postPlayerTopic}
+  tracing:
+    apiGateway: true
+    lambda: true
+    sns: true
+    dynamodb: true
   apiKeys:
     - free:
         - freePadelApiKey2022
@@ -67,6 +72,12 @@ provider:
         - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:function:${self:custom.prefix}-${self:custom.region}-get_ranking
         - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:function:${self:custom.prefix}-${self:custom.region}-get_player_by_positon
         - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:function:${self:custom.prefix}-${self:custom.region}-get_player_by_name
+    - Effect: "Allow" # xray permissions (required)
+      Action:
+        - "xray:PutTraceSegments"
+        - "xray:PutTelemetryRecords"
+      Resource:
+        - "*"
 
 custom:
   region: eu-west-1
@@ -106,9 +117,11 @@ functions:
   scraping_ranking:
     handler: lambdas/scraping_ranking/handler_scraping_ranking.h_scraping_ranking
     layers:
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws_xray_sdk:1
       - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:selenium:1
       - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:chromedriver:1
       - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:bs4:1
+
     timeout: 10
     events:
       - schedule: cron(30 23 1 * ? *)
@@ -117,6 +130,7 @@ functions:
     handler: lambdas/scraping_player/handler_scraping_player.h_scraping_player
     layers:
       - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:bs4:1
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws_xray_sdk:1
     timeout: 10
     events:
       - sns:
@@ -126,6 +140,8 @@ functions:
   #-------------RANKING-----------------------------------
   get_ranking:
     handler: lambdas/get_ranking/handler_get_ranking.h_get_ranking
+    layers:
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws_xray_sdk:1
     events:
       - http:
           path: ${self:custom.config.apiUrls.players}/ranking
@@ -135,6 +151,8 @@ functions:
   #-------------PLAYERS-----------------------------------
   get_player_by_name:
     handler: lambdas/get_player/handler_get_player.h_get_player_by_name
+    layers:
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws_xray_sdk:1
     events:
       - http:
           path: ${self:custom.config.apiUrls.players}/name/{name}
@@ -144,6 +162,8 @@ functions:
 
   get_player_by_position:
     handler: lambdas/get_player/handler_get_player.h_get_player_by_position
+    layers:
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws_xray_sdk:1
     events:
       - http:
           path: ${self:custom.config.apiUrls.players}/ranking/{position}
@@ -153,6 +173,8 @@ functions:
 
   post_player:
     handler: lambdas/post_player/handler_post_player.h_post_player
+    layers:
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws_xray_sdk:1
     events:
       - sns:
           arn: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.postPlayerTopic}
@@ -204,3 +226,4 @@ resources:
 plugins:
   - serverless-python-requirements
   - serverless-dynamodb-ttl
+  - serverless-plugin-tracing
