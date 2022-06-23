@@ -1,11 +1,10 @@
 <div id="top"></div>
 
 <!-- PROJECT SHIELDS -->
+[![AWS][aws-shield]][aws-url]
 [![CD][deploy-shield]][deploy-url]
 [![License][license-shield]][license-url]
 [![Stargazers][stars-shield]][stars-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
 
 
 <!-- PROJECT LOGO -->
@@ -155,16 +154,17 @@ José Ramón Martínez Riveiro - [Linkdedin](https://www.linkedin.com/in/joseram
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[deploy-shield]: https://img.shields.io/github/workflow/status/joseramonmartinez/api-padel/cd-serverless?logo=github&style=for-the-badge
+
+[aws-shield]:  	https://img.shields.io/badge/Amazon_AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white?style=for-the-badge
+
+[aws-url]: https://aws.amazon.com/
+
+[deploy-shield]: https://github.com/JoseRamonMartinez/api-padel/actions/workflows/cd-serverless.yml/badge.svg?style=for-the-badge
+
 [deploy-url]: https://github.com/JoseRamonMartinez/api-padel/actions/workflows/cd-serverless.yml
+
 [stars-shield]: https://img.shields.io/github/stars/JoseRamonMartinez/api-padel.svg?style=for-the-badge
 [stars-url]: https://github.com/JoseRamonMartinez/api-padel/stargazers
+
 [license-shield]: https://img.shields.io/badge/LICENSE-COPYRIGHT-yellow?style=for-the-badge
 [license-url]: https://img.shields.io/badge/LICENSE-COPYRIGHT-yellow?style=for-the-badge
-
-
-
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/joseramonmartinez
-[product-screenshot]: images/screenshot.png
