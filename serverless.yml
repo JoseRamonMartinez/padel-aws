@@ -19,11 +19,6 @@ provider:
     PLAYERS_TABLE: ${self:custom.playersTable}
     SNS_SCRAPING_ARN: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.scrapingTopic}
     SNS_POST_PLAYER_ARN: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.postPlayerTopic}
-  tracing:
-    apiGateway: true
-    lambda: true
-    sns: true
-    dynamodb: true
   apiKeys:
     - free:
         - freePadelApiKey2022
@@ -117,7 +112,7 @@ functions:
   scraping_ranking:
     handler: lambdas/scraping_ranking/handler_scraping_ranking.h_scraping_ranking
     layers:
-      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws-xray-sdk:1
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws-xray-sdk:2
       - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:selenium:1
       - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:chromedriver:1
       - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:bs4:1
@@ -130,7 +125,7 @@ functions:
     handler: lambdas/scraping_player/handler_scraping_player.h_scraping_player
     layers:
       - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:bs4:1
-      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws-xray-sdk:1
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws-xray-sdk:2
     timeout: 10
     events:
       - sns:
@@ -141,7 +136,7 @@ functions:
   get_ranking:
     handler: lambdas/get_ranking/handler_get_ranking.h_get_ranking
     layers:
-      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws-xray-sdk:1
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws-xray-sdk:2
     events:
       - http:
           path: ${self:custom.config.apiUrls.players}/ranking
@@ -152,7 +147,7 @@ functions:
   get_player_by_name:
     handler: lambdas/get_player/handler_get_player.h_get_player_by_name
     layers:
-      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws-xray-sdk:1
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws-xray-sdk:2
     events:
       - http:
           path: ${self:custom.config.apiUrls.players}/name/{name}
@@ -163,7 +158,7 @@ functions:
   get_player_by_position:
     handler: lambdas/get_player/handler_get_player.h_get_player_by_position
     layers:
-      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws-xray-sdk:1
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws-xray-sdk:2
     events:
       - http:
           path: ${self:custom.config.apiUrls.players}/ranking/{position}
@@ -174,7 +169,7 @@ functions:
   post_player:
     handler: lambdas/post_player/handler_post_player.h_post_player
     layers:
-      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws-xray-sdk:1
+      - arn:aws:lambda:${self:custom.region}:${self:custom.accountId}:layer:aws-xray-sdk:2
     events:
       - sns:
           arn: arn:aws:sns:${self:custom.region}:${self:custom.accountId}:${self:custom.postPlayerTopic}
