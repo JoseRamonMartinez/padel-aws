@@ -1,12 +1,5 @@
 <div id="top"></div>
 
-<!-- PROJECT SHIELDS -->
-
-[![AWS][aws-shield]][aws-url]
-[![License][license-shield]][license-url]
-[![Stargazers][stars-shield]][stars-url]
-[![CD][deploy-shield]][deploy-url]
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -14,10 +7,10 @@
     <img src="https://drive.google.com/uc?export=view&id=1twqwlJ7k7Xu5C9JO9uwUjVlc5OJO109x" alt="Logo" width="200" >
   </a>
 
-  <h3 align="center">PADDLE RANKING</h3>
+  <h3 align="center"><b>PADDLE RANKING</b></h3>
 
   <p align="center">
-    Web scraping for paddle ranking and API Rest to consume services
+   Serverless Web scraping automatic pipeline for paddle ranking.
     <br />
     <br />
     <br />
@@ -53,7 +46,7 @@
 
 </br>
 
-The project consist into a  web scraping system that saves updated paddle data from wpt in our database. This system is scheduled to trigger automatically. Furthermore, the system provide an API Rest to consume services.
+The project cosist of a web scraping serverless system that allows to get the ranking of the paddle players in the world. The system is composed by web scraping functions pipeline that is triggered by a cron job. The pipeline ends into a NoSQL database and expose data by an API.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -64,7 +57,6 @@ The project consist into a  web scraping system that saves updated paddle data f
 [Serverless Framework](https://www.serverless.com/): Framework to implement IaaC with cloud providers.
 
 [AWS Services](https://aws.amazon.com/es/):
-
 * [Lambda](https://aws.amazon.com/es/lambda/): Serverless logic functions
 * [SNS](https://aws.amazon.com/es/sns/?whats-new-cards.sort-by=item.additionalFields.postDateTime&whats-new-cards.sort-order=desc): Service notification system to comunicate services
 * [DynamoDB](https://aws.amazon.com/es/dynamodb/): NoSQL database
@@ -89,15 +81,12 @@ And more...
 
 # 3. API 🚀
 
-The API Rest is full docummented and you can use it for your project [Rapid API](https://rapidapi.com/search/paddle)
+The API Rest is full docummented and you can use it for your projects [Rapid API](https://rapidapi.com/search/paddle)
 
-# 4. Getting Started 🔧  
+# 4. Getting Started 🛠️  
 
-This is an example of how you may give instructions on setting up your project and deploy to AWS cloud.
-
-## 4.1 Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
+This is an example of how you may give instructions on setting up your project and deploy to AWS cloud. This is an example of how to list things you need to use the software and how to install them.
+## Pre-requisites
 * npm
   ```sh
   npm install npm@latest -g
@@ -107,13 +96,11 @@ This is an example of how to list things you need to use the software and how to
   npm install serverless@latest -g
   ```
 
-## 4.2 Installation 🛠️ 
-
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+## Installation  
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/JoseRamonMartinez/padel-aws.git
    ```
 2. Install NPM packages
    ```sh
@@ -133,20 +120,23 @@ _Below is an example of how you can instruct your audience on installing and set
 
 2. Deploy to AWS
    ```sh
-   sls deploy --<profile>
+   sls deploy --<aws-profile>
    ```
+</br>
 
-<!-- CONTACT -->
 # 5. Author ✒️
 
-José Ramón Martínez Riveiro - [Linkdedin](https://www.linkedin.com/in/joseramonmartinezriveiro/) - josera.martinez@hotmail.com
+<h3>José Ramón Martínez Riveiro &nbsp;
+<a href="https://www.linkedin.com/in/joseramonmartinezriveiro/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a>
+<a href="https://joseramonmartinez.github.io/"><img src="https://img.shields.io/badge/website-000000?style=for-the-badge&logo=About.me&logoColor=white"></a>
+</img>
+</h3>
 
-[Online Portfolio](https://joseramonmartinez.github.io/)
 </br>
-<br>
-<!-- LICENSE -->
+</br>
+
 # 6. License 📄
-`Copyright` © 2017, José Ramón Martínez Riveiro. 
+`Copyright` © 2022, José Ramón Martínez Riveiro. 
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -157,13 +147,6 @@ José Ramón Martínez Riveiro - [Linkdedin](https://www.linkedin.com/in/joseram
 [aws-shield]:  	https://img.shields.io/badge/Amazon_AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white?style=for-the-badge
 
 [aws-url]: https://aws.amazon.com/
-
-[deploy-shield]: https://github.com/JoseRamonMartinez/api-padel/actions/workflows/cd-serverless.yml/badge.svg?style=for-the-badge
-
-[deploy-url]: https://github.com/JoseRamonMartinez/api-padel/actions/workflows/cd-serverless.yml
-
-[stars-shield]: https://img.shields.io/github/stars/JoseRamonMartinez/api-padel.svg?style=for-the-badge
-[stars-url]: https://github.com/JoseRamonMartinez/api-padel/stargazers
 
 [license-shield]: https://img.shields.io/badge/LICENSE-COPYRIGHT-yellow?style=for-the-badge
 [license-url]: https://img.shields.io/badge/LICENSE-COPYRIGHT-yellow?style=for-the-badge
