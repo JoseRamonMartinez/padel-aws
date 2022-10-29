@@ -21,13 +21,13 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li><a href="#about-the-project">About The Project</a></li>
-    <li><a href="#built-with">Built With</a></li>
-    <li><a href="#api-usage">API Usage</a></li>
+    <li><a href="#About the Project">About the Project</a></li>
+    <li><a href="#built with">Built With</a></li>
+    <li><a href="#api">API</a></li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#pre-requisites">Pre-requisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
@@ -39,7 +39,7 @@
 <br>
 
 <!-- ABOUT THE PROJECT -->
-# 1. About The Project 📢
+# 1. About the Project 📢
 
 
  <img src="https://drive.google.com/uc?export=view&id=17ELf6JuMo1UeXZ2_fL_9pEMmUkbi3mwg" alt="Diagram icon">
