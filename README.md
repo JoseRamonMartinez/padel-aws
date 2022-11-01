@@ -61,7 +61,8 @@ The project cosist of a web scraping serverless system that allows to get the ra
 * [SNS](https://aws.amazon.com/es/sns/?whats-new-cards.sort-by=item.additionalFields.postDateTime&whats-new-cards.sort-order=desc): Service notification system to comunicate services
 * [DynamoDB](https://aws.amazon.com/es/dynamodb/): NoSQL database
 * [API Gateway](https://aws.amazon.com/es/api-gateway/): API Rest management
-* [CloudWatch event](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/WhatIsCloudWatchEvents.html): Schedule the system trigger. 
+* [CloudWatch event](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/WhatIsCloudWatchEvents.html): Schedule the system trigger.
+* [X-Ray](https://aws.amazon.com/es/xray/): Service to trace and monitor the system services.
 
 
 _GOOD PRACTICES APPLIED_
@@ -73,6 +74,8 @@ _GOOD PRACTICES APPLIED_
 * TLL created to delete database data before new paddle ranking data is web screaped.
 
 * Secondary Index created in the player table to reduce DynamoDB cost for get services
+
+* Services tracing
  
 And more...
 
@@ -113,9 +116,10 @@ This is an example of how you may give instructions on setting up your project a
     scrapingTopicName: <CustomName>
     postPlayerTopicName: <CustomName>
     apiUrls:
-      players: CustomName
-      scraping: CustomName
+      players: <CustomName>
     accountIdNumber: <AWS_ACCOUNT_ID_NUMBER>
+    stage: <Stage>
+    region: <AWS-REGION>
    ```
 
 2. Deploy to AWS

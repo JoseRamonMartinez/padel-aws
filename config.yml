@@ -9,8 +9,8 @@ postPlayerTopicName: postPlayerTopic
 #-------------API GATEWAY---------------------------
 apiUrls:
   players: players
-  scraping: scraping
 
-#----------AccountId----------
+#----------General Config----------
 accountIdNumber: 533796783460
-
+region: eu-west-1
+stage: prod
